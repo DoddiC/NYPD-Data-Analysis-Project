@@ -19,37 +19,3 @@ The following techniques have been utilzied to perform the analysis:
 * **Chidvi Doddi** - [DoddiC](https://github.com/DoddiC)
 * **Diana Bui** - [dianadbui](https://github.com/dianadbui)
 * **Susanna Morin** - [codeswitch](https://github.com/codeswitch)
-
-## Citations
-@article{raschkas_2018_mlxtend,
-
-1.   List item
-2.   List item
-
-
-  author       = {Sebastian Raschka},
-  title        = {MLxtend: Providing machine learning and data science 
-                  utilities and extensions to Python’s  
-                  scientific computing stack},
-  journal      = {The Journal of Open Source Software},
-  volume       = {3},
-  number       = {24},
-  month        = apr,
-  year         = 2018,
-  publisher    = {The Open Journal},
-  doi          = {10.21105/joss.00638},
-  url          = {http://joss.theoj.org/papers/10.21105/joss.00638}
-}
-
-@inproceedings{sklearn_api,
-  author    = {Lars Buitinck and Gilles Louppe and Mathieu Blondel and
-               Fabian Pedregosa and Andreas Mueller and Olivier Grisel and
-               Vlad Niculae and Peter Prettenhofer and Alexandre Gramfort
-               and Jaques Grobler and Robert Layton and Jake VanderPlas and
-               Arnaud Joly and Brian Holt and Ga{\"{e}}l Varoquaux},
-  title     = {{API} design for machine learning software: experiences from the scikit-learn
-               project},
-  booktitle = {ECML PKDD Workshop: Languages for Data Mining and Machine Learning},
-  year      = {2013},
-  pages = {108--122},
-}
