@@ -20,7 +20,7 @@ Section 1: Onboarding process
 
 A. Reading in the NYPD dataset and dropping null values
 
-![](https://github.com/DoddiC/DataAnalysisProject-RATM/blob/master/code-demos/reading%20in%20data%20and%20dropNull.mov)
+![](https://github.com/DoddiC/DataAnalysisProject-RATM/blob/master/ugh/ezgif-2-d9b128aabad5.mp4)
 
 B. Data preprocessing
 
