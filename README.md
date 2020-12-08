@@ -24,15 +24,15 @@ The following techniques have been utilized to perform the analysis:
     
 <!-- toc -->
 
-## Section 1: Onboarding process
+### Section 1: Onboarding process
 
 test
 
-### Reading in the NYPD dataset and dropping null values
+#### Reading in the NYPD dataset and dropping null values
 
 test
 
-### Data preprocessing
+#### Data preprocessing
 
 test
 
