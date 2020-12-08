@@ -26,8 +26,8 @@ The following techniques have been utilized to perform the analysis:
   * [Demographic parity:](#demographic-parity)
   * [Errors comparison and any inferences:](#errors-comparison-and-any-inferences)
 - [Section 4: Conclusion](#section-4-Conclusion)
-- [Section 5: Things-to-note](#section-5-Things-to-note)
-- [Section 6: Future-modifications-and-predictions](#section-6-Future-modifications-and-predictions)
+- [Section 5: Things to note](#section-5-Things-to-note)
+- [Section 6: Future modifications and predictions](#section-6-Future-modifications-and-predictions)
 - [Section 7: Citations](#section-7-Citations)
     
 <!-- toc -->
@@ -88,8 +88,6 @@ Two possible definitions that fit the context and model: individual fairness and
 ### Individual Fairness
 Pie chart: for a crime, grab a person from each racial group with the most similar if not the same values, and then see if they have the same outcome (yes or no arrest)
 
-*i don tthink individual is the def? but who knows, maybe
-
 ### Fairness through Unawareness
 - police watch and report more for neighborhoods with more crime 
   - disparate impact on BIPOC communities
@@ -101,7 +99,7 @@ https://en.wikipedia.org/wiki/New_York_City_Police_Department_corruption_and_mis
 https://www.wsj.com/articles/nypds-stop-and-frisk-practice-still-affects-minorities-in-new-york-city-11574118605
 https://www.nytimes.com/2019/11/17/nyregion/bloomberg-stop-and-frisk-new-york.html
 
-## Section 5: Things-to-note
+## Section 5: Things to note
 
 ### Data Quality Issues
 > #### **Representativeness**
@@ -116,7 +114,7 @@ There are significant differences in demographics in the dataset. Of the 13,459 
 > #### **Behaviorial Bias**:
 Not all of the officers are reporting every one of their incidents and when they do, the quality and descriptions of the report will be different for each person. For example, while on the scene, one officer describes the suspect as "NORMAL" and another officer describes the suspect as "APPARENTLY NORMAL". The two officers described the same person, but their interpretations are slightly different. 
 
-## Section 6: Future-modifications-and-predictions
+## Section 6: Future modifications and predictions
 
 test
 
