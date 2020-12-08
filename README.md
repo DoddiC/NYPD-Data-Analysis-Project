@@ -16,31 +16,59 @@ The following techniques have been utilized to perform the analysis:
 * Matplotlib
 
 ## Full length breakdown of the DataAnalysisProject (RATM).ipynb file:
-Section 1: Onboarding process
 
-A. Reading in the NYPD dataset and dropping null values
+ [Section-1-Onboarding-process](#section-1-Onboarding-process)
+  * [Sub-heading](#sub-heading)
+    + [Sub-sub-heading](#sub-sub-heading)
+- [Section-2-Modeling process](#section-2-Modeling process)
+  * [Sub-heading](#sub-heading-1)
+    + [Sub-sub-heading](#sub-sub-heading-1)
+- [Section-3-Fairness-definitions](section-3-Fairness-definitions)
+  * [Sub-heading](#sub-heading-2)
+    + [Sub-sub-heading](#sub-sub-heading-2)
+- [Section-4-Conclusion](#section-4-Conclusion)
+  * [Sub-heading](#sub-heading-2)
+    + [Sub-sub-heading](#sub-sub-heading-3)
+- [Section-5-Things-to-note](#section-5-Things-to-note)
+  * [Sub-heading](#sub-heading-2)
+    + [Sub-sub-heading](#sub-sub-heading-2)
+- [Section-6-Future-modifications-and-predictions](#section-6-Future-modifications-and-predictions)
+  * [Sub-heading](#sub-heading-2)
+    + [Sub-sub-heading](#sub-sub-heading-2)
+- [Section-7-Citations](#section-7-Citations)
+  * [Sub-heading](#sub-heading-2)
+    + [Sub-sub-heading](#sub-sub-heading-2)
+    
+<!-- toc -->
 
-B. Data preprocessing
+## Section-1-Onboarding-process
 
-Section 2: Modeling process
+This is an h1 heading
 
-A. Training and predicting with the model
+### Sub-heading
 
-Section 3: Fairness definitions
+This is an h2 heading
 
-A. Predictive rate parity
+#### Sub-sub-heading
 
-B. Demographic parity
+This is an h3 heading
 
-C. Errors comparison and any inferences
+## Section-2-Modeling process
 
-Section 4: Conclusion
+This is an h1 heading
 
-Section 5: Things to note
+### Sub-heading
 
-Section 6: Future modifications and predictions
+This is an h2 heading
 
-Section 7: Citations
+#### Sub-sub-heading
+
+This is an h3 heading
+
+## Section-3-Fairness-definitions
+
+This is an h1 heading
+
 
 
 ## Authors
