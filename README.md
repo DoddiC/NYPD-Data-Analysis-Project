@@ -83,11 +83,38 @@ test
 
 ## Section 4: Conclusion
 
-test
+Two possible definitions that fit the context and model: individual fairness and fairness through unawareness
+
+### Individual Fairness
+Pie chart: for a crime, grab a person from each racial group with the most similar if not the same values, and then see if they have the same outcome (yes or no arrest)
+
+*i don tthink individual is the def? but who knows, maybe
+
+### Fairness through Unawareness
+- police watch and report more for neighborhoods with more crime 
+  - disparate impact on BIPOC communities
+  - report moer crime, more police, more crimes
+- NYPD has history of undisciplined misconduct
+
+Resources: 
+https://en.wikipedia.org/wiki/New_York_City_Police_Department_corruption_and_misconduct
+https://www.wsj.com/articles/nypds-stop-and-frisk-practice-still-affects-minorities-in-new-york-city-11574118605
+https://www.nytimes.com/2019/11/17/nyregion/bloomberg-stop-and-frisk-new-york.html
 
 ## Section 5: Things-to-note
 
-test
+### Data Quality Issues
+> #### **Representativeness**
+> #### **Preprocessing**: 
+We were merciless with the data we used for our model. We only accepted feature vectors with sufficient data and dropped all those that had *any* instance of values we could not use. We did not prioritise reprensativeness and it led to an extremely harmful (and incorrect) model. This is apparent when you compare the proporiton of arrests over the entire dataset and the "cleaned" dataset (0.32, 0.93). 
+> #### **Noise and Sparse Data**: 
+Looking at the original 2019 dataset, it is easy to see major data quality issues. This arises when officers and supervisors do not document and review all of their stops per their protocol ([NY Times](https://www.nytimes.com/2019/11/17/nyregion/bloomberg-stop-and-frisk-new-york.html)). Officers are more likely to record incidents properly when an arrest is made. So of the recorded stop-and-frisk incidents, the incidents that lead to an arrest are more likely to be robust in the data. This is apparent when we filter the data with respect to "SUSPECT_ARRESTED_FLAG" and a "Y" (or yes) value. Now look at the data when we filter with respect to "FRISKED_FLAG" and a "Y" value again. Note the difference in quality of the filtered data. Because of this, during the  pre-processing step, stop-and-frisk incidents that led to arrests were more favored. 
+
+## Data Bias
+> #### **Population Bias**:
+There are significant differences in demographics in the dataset. Of the 13,459 stops recorded, 59% were Black and 29% were Hispanic or Latinx. Less than 10% were White. 
+> #### **Behaviorial Bias**:
+Not all of the officers are reporting every one of their incidents and when they do, the quality and descriptions of the report will be different for each person. For example, while on the scene, one officer describes the suspect as "NORMAL" and another officer describes the suspect as "APPARENTLY NORMAL". The two officers described the same person, but their interpretations are slightly different. 
 
 ## Section 6: Future-modifications-and-predictions
 
