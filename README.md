@@ -20,7 +20,7 @@ Section 1: Onboarding process
 
 A. Reading in the NYPD dataset and dropping null values
 
-![](code-demos/reading%20in%20data%20and%20dropNull.mov
+![](code-demos/reading in data and drop Null.mov)
 
 B. Data preprocessing
 
