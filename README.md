@@ -9,11 +9,27 @@ Main files in this project:
 * [NYPD2019.csv](https://github.com/DoddiC/DataAnalysisProject-RATM/blob/master/NYPD2019.csv):  We do not own the dataset. It is located in the following url: https://www1.nyc.gov/site/nypd/stats/reports-analysis/stopfrisk.page. However, in order to facilitate the download and setup of the project, specifically the .ipynb file, it has been added to the repository.
 
 ## Analysis techniques
-The following techniques have been utilzied to perform the analysis:
+The following techniques have been utilized to perform the analysis:
 * Data Pre-processing
 * Logistic Regression
 * Demographic and Predictive Parity
 * Matplotlib
+
+## Full length breakdown of the DataAnalysisProject (RATM).ipynb file:
+Section 1: Onboarding process
+A. Data preprocessing
+B. Loading the NYPD dataset
+Section 2: Modeling process
+A. Training and predicting with the model
+Section 3: Fairness definitions
+A. Predictive rate parity
+B. Demographic parity
+C. Errors comparison and any inferences
+Section 4: Conclusion
+Section 5: Things to note
+Section 6: Future modifications and predictions
+Section 7: Citations
+
 
 ## Authors
 * **Chidvi Doddi** - [DoddiC](https://github.com/DoddiC)
