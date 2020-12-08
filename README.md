@@ -17,7 +17,7 @@ The following techniques have been utilized to perform the analysis:
 
 ## Full length breakdown of the DataAnalysisProject (RATM).ipynb file:
 
- [Section 1: Onboarding process](#section-1-onboarding-process)
+- [Section 1: Onboarding process](#section-1-onboarding-process)
   * [Reading in the NYPD dataset and dropping null values](#reading-in-the-NYPD-dataset-and-dropping-null-values)
   * [Data preprocessing](#data-preprocessing)
 
