@@ -38,7 +38,12 @@ The following techniques have been utilized to perform the analysis:
 
 We first began by importing the libraries we will be using for this project and reading the NPYD dataset:
 
-
+'''
+import pandas as pd # Necessary libraries
+import numpy as np
+import warnings # Suppressing warnings
+warnings.filterwarnings('ignore')
+'''
 
 ### Data preprocessing:
 
