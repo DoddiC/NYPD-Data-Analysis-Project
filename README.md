@@ -17,57 +17,24 @@ The following techniques have been utilized to perform the analysis:
 
 ## Full length breakdown of the DataAnalysisProject (RATM).ipynb file:
 
- [Section-1-Onboarding-process](#section-1-Onboarding-process)
-  * [Sub-heading](#sub-heading)
-    + [Sub-sub-heading](#sub-sub-heading)
-- [Section-2-Modeling process](#section-2-Modeling process)
-  * [Sub-heading](#sub-heading-1)
-    + [Sub-sub-heading](#sub-sub-heading-1)
-- [Section-3-Fairness-definitions](section-3-Fairness-definitions)
-  * [Sub-heading](#sub-heading-2)
-    + [Sub-sub-heading](#sub-sub-heading-2)
-- [Section-4-Conclusion](#section-4-Conclusion)
-  * [Sub-heading](#sub-heading-2)
-    + [Sub-sub-heading](#sub-sub-heading-3)
-- [Section-5-Things-to-note](#section-5-Things-to-note)
-  * [Sub-heading](#sub-heading-2)
-    + [Sub-sub-heading](#sub-sub-heading-2)
-- [Section-6-Future-modifications-and-predictions](#section-6-Future-modifications-and-predictions)
-  * [Sub-heading](#sub-heading-2)
-    + [Sub-sub-heading](#sub-sub-heading-2)
-- [Section-7-Citations](#section-7-Citations)
-  * [Sub-heading](#sub-heading-2)
-    + [Sub-sub-heading](#sub-sub-heading-2)
+ [Section 1: Onboarding process](#section-1-onboarding-process)
+  * [Reading in the NYPD dataset and dropping null values](#reading-in-the-NYPD-dataset-and-dropping-null-values)
+  * [Data preprocessing](#data-preprocessing)
+
     
 <!-- toc -->
 
-## Section-1-Onboarding-process
+### Section-1-Onboarding-process
 
-This is an h1 heading
+test
 
-### Sub-heading
+#### Reading in the NYPD dataset and dropping null values
 
-This is an h2 heading
+test
 
-#### Sub-sub-heading
+#### Data preprocessing
 
-This is an h3 heading
-
-## Section-2-Modeling process
-
-This is an h1 heading
-
-### Sub-heading
-
-This is an h2 heading
-
-#### Sub-sub-heading
-
-This is an h3 heading
-
-## Section-3-Fairness-definitions
-
-This is an h1 heading
+test
 
 
 
