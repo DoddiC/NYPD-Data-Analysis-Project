@@ -36,14 +36,22 @@ The following techniques have been utilized to perform the analysis:
 
 ### Reading in the NYPD dataset and dropping null values:
 
-We first began by importing the libraries we will be using for this project and reading the NPYD dataset:
+We first began by importing the libraries, as well as the NYPD dataset, we will be using for this project:
 
-'''
+```python
 import pandas as pd # Necessary libraries
 import numpy as np
 import warnings # Suppressing warnings
 warnings.filterwarnings('ignore')
-'''
+```
+This allows us to read the file and create dataframes:
+
+```python
+data = pd.read_csv("NYPD2019.csv")
+data = data.fillna(value = 0)  #fill Nan values with 0
+data.head()
+#data.shape #(13459, 27)
+```
 
 ### Data preprocessing:
 
