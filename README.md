@@ -15,7 +15,7 @@ The following techniques have been utilized to perform the analysis:
 * Demographic and Predictive Parity
 * Matplotlib
 
-## Full length breakdown of the DataAnalysisProject (RATM).ipynb file:
+# Full length breakdown of the DataAnalysisProject (RATM).ipynb file:
 
 - [Section 1: Onboarding process](#section-1-onboarding-process)
   * [Reading in the NYPD dataset and dropping null values](#reading-in-the-NYPD-dataset-and-dropping-null-values)
@@ -24,15 +24,15 @@ The following techniques have been utilized to perform the analysis:
     
 <!-- toc -->
 
-### Section 1: Onboarding process
+## Section 1: Onboarding process
 
 test
 
-#### Reading in the NYPD dataset and dropping null values
+### Reading in the NYPD dataset and dropping null values
 
 test
 
-#### Data preprocessing
+### Data preprocessing
 
 test
 
