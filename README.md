@@ -17,17 +17,29 @@ The following techniques have been utilized to perform the analysis:
 
 ## Full length breakdown of the DataAnalysisProject (RATM).ipynb file:
 Section 1: Onboarding process
+
 A. Data preprocessing
+
 B. Loading the NYPD dataset
+
 Section 2: Modeling process
+
 A. Training and predicting with the model
+
 Section 3: Fairness definitions
+
 A. Predictive rate parity
+
 B. Demographic parity
+
 C. Errors comparison and any inferences
+
 Section 4: Conclusion
+
 Section 5: Things to note
+
 Section 6: Future modifications and predictions
+
 Section 7: Citations
 
 
