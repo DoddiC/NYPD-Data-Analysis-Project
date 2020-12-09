@@ -17,8 +17,12 @@ The following techniques have been utilized to perform the analysis:
 # Full length breakdown of the DataAnalysisProject (RATM).ipynb file:
 
 - [Section 1: Onboarding process](#section-1-onboarding-process)
-  * [Reading in the NYPD dataset and dropping null values:](#reading-in-the-NYPD-dataset-and-dropping-null-values)
   * [Data preprocessing:](#data-preprocessing)
+   + [Removal of features](#removal-of-features)
+   + [Feature engineering](#feature-vectors)
+   + [Dropping extraneous columns](#dropping-extraneous-columns)
+   + [Type conversion](#type-conversion)
+  * [Reading in the NYPD dataset and dropping null values:](#reading-in-the-NYPD-dataset-and-dropping-null-values)
 - [Section 2: Modeling process](#section-2-modeling-process)
   * [Training and predicting with the model:](#training-and-predicting-with-the-model)  
 - [Section 3: Fairness definitions](section-3-Fairness-definitions)
@@ -34,6 +38,54 @@ The following techniques have been utilized to perform the analysis:
 
 ## Section 1: Onboarding process
 
+### Data preprocessing:
+
+#### Removal of features:
+
+During this process, we first removed features that:
+
+1. Had sparse data: These columns were filled with a large amount of NULL cells.
+> Some of the features dropped: FIREARM_FLAG, PHYSICAL_FORCE_DRAW_POINT_FIREARM_FLAG, PHYSICAL_FORCE_OC_SPRAY_USED_FLAG
+2. Had too much noise: These columns were filled with unusable data and if we were to use these data, it would require extensive data cleaning.
+> Some of the features dropped: SUSPECT_OTHER_DESCRIPTION, DEMEANOR_OF_PERSON_STOPPED
+3. We were not interested in/do not believe was pertinent: These features were extraneous information (i.e. no suspect would be stopped because of these features). 
+> Some of the features dropped: STOP_LOCATION_STREET_NAME, SUSPECT_HAIR_COLOR
+
+In the original dataset, there were over 83 features. After this step, we were left with 27 features. 
+
+#### Feature engineering:
+
+Because models cannot use strings, we had to convert all strings in the dataset to numerical values. This process is called "Mapping Categorical Variables". So for each unique value in the feature, we mapped it to an integer value and kept track of these values on a separate database for data retracing.
+
+For example, the feature "OFFICER_EXPLAINED_STOP_FLAG" consisted of *Ys* for *Yes* and *Ns* for *No*. We mapped *Y* to 2 and *N* to 1. 
+
+During this step, we also replaced all cells populated with the "NULL" value to 0 values. We did this to keep all of the dataset. We previously used the dropna function but this brought down the size of the dataset significantly.  
+
+(We also moved the feature/column named "SUSPECT_ARRESTED_FLAG" to the end. We did this for ease and emphasis on/with this column. For this project, we were using this feature as the label that we were trying to predict.)
+
+#### Dropping extraneous columns:
+
+In the following stage, we decided to drop more columns because we felt the dataset was still somewhat convoluted for our purpose. For what columns to drop, the choices made were influenced by the same thought process as above. After this step, our remaining dataframe consists of 740 feature vectors with 20 features. 
+
+```python
+#dropped columns further
+data = data.drop(columns = ['OFFICER_EXPLAINED_STOP_FLAG', 'OFFICER_IN_UNIFORM_FLAG', 'SUMMONS_ISSUED_FLAG'])
+data = data.drop(columns = ['OTHER_CONTRABAND_FLAG', 'SUSPECT_REPORTED_AGE', 'SUSPECT_HEIGHT', 'SUSPECT_WEIGHT'])
+
+#print(data.shape) #13459 X 20
+
+data.head()
+```
+
+#### Type conversion:
+
+For convienence and uniformity, we transformed the (now clean) DataFrame into Numpy arrays:
+
+```python
+dataX = data.values[:, :19]
+dataY = data.values[:, -1:].ravel() #"SUSPECT_ARRESTED_FLAG"
+```
+
 ### Reading in the NYPD dataset and dropping null values:
 
 We first began by importing the libraries, as well as the NYPD dataset, we will be using for this project:
@@ -44,7 +96,7 @@ import numpy as np
 import warnings # Suppressing warnings
 warnings.filterwarnings('ignore')
 ```
-This allows us to read the file and create dataframes:
+This allows us to read the file and create a pandas DataFrame, as follows. During this step, we also replaced all cells populated with the "NULL" value to 0 values. We did this to keep all of the dataset. 
 
 ```python
 data = pd.read_csv("NYPD2019.csv")
@@ -52,10 +104,6 @@ data = data.fillna(value = 0)  #fill Nan values with 0
 data.head()
 #data.shape #(13459, 27)
 ```
-
-### Data preprocessing:
-
-test
 
 ## Section 2: Modeling process
 
