@@ -26,6 +26,7 @@ The following techniques have been utilized to perform the analysis:
 - [Section 2: Modeling process](#section-2-modeling-process)
   * [Training and predicting with the model](#training-and-predicting-with-the-model)  
 - [Section 3: Fairness definitions](section-3-Fairness-definitions)
+  * [Create a split_on_feature() function](#create-a-split_on_feature()-function)
   * [Predictive rate parity](#predictive-rate-parity)
   * [Demographic parity](#demographic-parity)
   * [Errors comparison and any inferences](#errors-comparison-and-any-inferences)
@@ -117,19 +118,219 @@ test
 
 ## Section 3: Fairness definitions
 
-test
+Resource: https://towardsdatascience.com/a-tutorial-on-fairness-in-machine-learning-3ff8ba1040cb
+
+For the purpose of this project, we will investigate with only 2 definitions: **Predictive Rate Parity** and **Demographic Parity**. We can also attempt to uncover the definition of fairness the NYPD operates with. We can do this by performing error analyses with our trained logistic regression model.
+
+### Create a split_on_feature() function:
+
+We have first defined a function called "split_on_feature" that returns feature vector and label arrays populated with the feature vectors of the corresponding race. With the help of our newly constructed arrays, we will use them to predict on our model for each racial group.
+
+```python
+# if for race column ex. split on {1, 2, 3, 4, 5, 6}
+# SUSPECT_RACE_DESCRIPTION
+# column index 15
+
+def split_on_feature(dataX, dataY):
+    rows_black = []          #1:BLACK
+    rows_white = []          #2: WHITE
+    rows_black_hispanic = [] #3: BLACK HISPANIC
+    rows_white_hispanic = [] #4: WHITE HISPANIC
+    rows_asian_pacific = []  #5: ASIAN / PACIFIC ISLANDER
+    rows_na_indian = []      #6: AMERICAN INDIAN/ALASKAN N(ATIVE)
+    
+    #looking through data and recording features w/r to race
+    for i in range(dataX.shape[0]):
+        if dataX[i, 15] == 1:
+            rows_black.append(i)
+        elif dataX[i, 15] == 2:
+            rows_white.append(i)
+        elif dataX[i, 15] == 3:
+            rows_black_hispanic.append(i)
+        elif dataX[i, 15] == 4:
+            rows_white_hispanic.append(i)
+        elif dataX[i, 15] == 5:
+            rows_asian_pacific.append(i)
+        else: # if dataX[i, 15] == 6
+            rows_na_indian.append(i)
+
+
+    #for i in range(dataX.shape[0]):
+        #else:
+            # print("else",dataA[i, column])
+            #rows_B.append(i)
+
+    # selecting rows and placing them into their own np.arrays:
+    
+    #dataX values
+    X_black = dataX[rows_black, :]
+    X_white = dataX[rows_white, :]
+    X_black_hispanic = dataX[rows_black_hispanic, :]
+    X_white_hispanic = dataX[rows_white_hispanic, :]
+    X_asian_pacific = dataX[rows_asian_pacific, :]
+    X_na_indian = dataX[rows_na_indian, :]
+
+    #dataY values
+    Y_black = dataY[rows_black]
+    Y_white = dataY[rows_white]
+    Y_black_hispanic = dataY[rows_black_hispanic]
+    Y_white_hispanic = dataY[rows_white_hispanic]
+    Y_asian_pacific = dataY[rows_asian_pacific]
+    Y_na_indian = dataY[rows_na_indian]
+
+    
+    return X_black, X_white, X_black_hispanic, X_white_hispanic, X_asian_pacific, X_na_indian, Y_black, Y_white, Y_black_hispanic, Y_white_hispanic, Y_asian_pacific, Y_na_indian
+```
+We can then split up the data (the different races, in this case) by using the function we created and predict on them:
+
+# splitting up the data!
+
+```python
+X_black, X_white, X_black_hispanic, X_white_hispanic, X_asian_pacific, X_na_indian, Y_black, Y_white, Y_black_hispanic, Y_white_hispanic, Y_asian_pacific, Y_na_indian = split_on_feature(dataX, dataY)
+
+# predict on model with the arrays
+y_hat_black = reg.predict(X_black)
+y_hat_white = reg.predict(X_white)
+y_hat_black_his = reg.predict(X_black_hispanic)
+y_hat_white_his = reg.predict(X_white_hispanic)
+y_hat_asian_pa = reg.predict(X_asian_pacific)
+y_hat_na_indi = reg.predict(X_na_indian)
+```
 
 ### Predictive rate parity:
 
-test
+we can then examine if the model follows the fairness definition of **Predictive Rate Parity**. In essence, this definition is satisfied when all groups in the protected attribute of the dataset have the same probability of a subject with a positive predicted value to truly belong to the positive class. This also true for the negative case. 
+We chose this definition because
+- if stop and frisk events precision rates are the same across each racial groups
+
+**Predictive Rate Error**:
+For a group G, Y = true label, Y' = predicted label
+∑𝑦∑𝑔|𝑃(Y = y|G = 1, 𝑌̂' = 𝑦)− 𝑃(Y = y|G = 2, 𝑌̂' = 𝑦) - ... - 𝑃(Y = y|G = 2, 𝑌̂' = 𝑦)|
+
+The following code defines a function, "PPV_FDR", that returns the probability of a subject with a positive predicted value to truly belong to the positive class in a racial group. It also returns the negative case. 
+
+```python
+# calculates ppv and fdr of a race group
+# less cluttered code than doing all in one single function
+def PPV_FDR(y_hat, y):
+    yes = 0
+    no = 0;
+
+    for i in range(len(y_hat)):
+        if (y_hat[i]==0 and y[i]==0):
+            no += 1
+        if (y_hat[i]==1 and y[i]==1):
+            yes += 1
+
+    #count_one_hat = yes/(len(y_hat)-np.count_nonzero(y_hat)) #ppv
+    count_one_hat = yes/(np.count_nonzero(y_hat)) #ppv
+    
+    #count_zero_hat = no/np.count_nonzero(y_hat) #fdr
+    if (len(y_hat) - np.count_nonzero(y_hat)) == 0:
+      count_zero_hat = 1
+    else:
+      count_zero_hat = no/(len(y_hat) - np.count_nonzero(y_hat))
+    return count_one_hat, count_zero_hat
+```
+
+We use the PPV_FDR() function to help us calculate the **predictive parity error**: 
+
+```python
+#P(Y = 1|Y' = 1,G = 0) = P(Y = 1|Y' = 1,G = 1) and P(Y = 0|Y' = 0,G = 0) = P(Y = 0|Y' = 0,G = 1).
+#calculating ppv and fdr for each race group
+ppv_black, fdr_black = PPV_FDR(y_hat_black, Y_black)
+ppv_white, fdr_white = PPV_FDR(y_hat_white, Y_white)
+ppv_black_his, fdr_black_his = PPV_FDR(y_hat_black_his, Y_black_hispanic)
+ppv_white_his, fdr_white_his = PPV_FDR(y_hat_white_his, Y_white_hispanic)
+ppv_asian_pa, fdr_asian_pa = PPV_FDR(y_hat_asian_pa, Y_asian_pacific)
+ppv_na_indi, fdr_na_indi = PPV_FDR(y_hat_na_indi, Y_na_indian)
+
+#calculating predictive parity error
+predictive_parity_err = np.abs(fdr_black - fdr_white - fdr_black_his - fdr_white_his - fdr_asian_pa - fdr_na_indi)
+predictive_parity_err += np.abs(ppv_black - ppv_white - ppv_black_his - ppv_white_his - ppv_asian_pa - ppv_na_indi)
+
+#display error
+print(predictive_parity_err) #if definition is followed, the error should be near 0
+```
 
 ### Demographic parity:
 
-test
+we will examine how well the model follows the definition of Demogrpahic Parity. This definition essentially strives for an equal probability of a subject being assigned to the positive prediction class across/for all groups in the protected attribute. We chose this definition because it is supported legally by what is called the "four-fifth rule". This in conjunction with the fact this is the NYPD, a government agency, it was necessary to evaluate the model with this definition. 
+
+Demographic Parity Error:
+For a group G, Y = predicted label
+
+Intuitively demographic parity says that the ratio of the group in the whole population will be the same as the ratio of the group in the predicted classes. Formally for protected attribute  𝐺  and classifier  𝑌̂  , this can be specified as
+
+∑𝑔,𝑦|𝑃(𝐺=𝑔|𝑌̂ =𝑦)−𝑃(𝐺=𝑔)|.
+
+We follow the same process as we did for Predictive Rate Parity Error. We first define a function to calculate the demographic parity error for a specific group. 
+
+```python
+# args: 
+# y_hat is predicted values
+# y_no is number of NO/0 predicted
+# y_yes is number of YES/1 predicted
+
+# to make things easier, function only calculates dpe for one group
+def demographic_parity_error(y_hat, y_no, y_yes): 
+    #error can be more than 1
+    #g = 1, ... 6
+    #ex. (g = 1, y = 0) - g = 1 + (g = 1, y = 1) - g = 1
+    
+    num_ppl = len(y_hat)
+    prob_ppl = len(y_hat)/740 #number of feature vectors = 740
+    ppl_given_yes = num_ppl/y_yes
+    ppl_given_no = num_ppl/y_no
+    
+    dp_error = np.abs(ppl_given_no - prob_ppl) + np.abs(ppl_given_yes - prob_ppl)
+    
+    return dp_error
+```
+
+This function, called "demographic_parity_error", helps us shorten the process of finding the total error:
+
+```python
+#calculating p(Y = 1, 0)
+throwaway, counts = np.unique(y_hat_black, return_counts = True)
+black_no, black_yes = counts[0], counts[1]
+throwaway, counts = np.unique(y_hat_white, return_counts = True)
+white_no, white_yes = counts[0], counts[1]
+throwaway, counts = np.unique(y_hat_black_his, return_counts = True)
+black_his_no, black_his_yes = counts[0], counts[1]
+throwaway, counts = np.unique(y_hat_white_his, return_counts = True)
+white_his_no, white_his_yes = counts[0], counts[1]
+throwaway, counts = np.unique(y_hat_asian_pa, return_counts = True)
+asian_pa_no, asian_pa_yes = counts[0], counts[1]
+throwaway, counts = np.unique(y_hat_na_indi, return_counts = True)
+na_indi_no, na_indi_yes = counts[0], counts[1]
+
+#adding the yes and no designated values to their corresponding totals
+y_no = black_no + white_no + black_his_no + white_his_no + asian_pa_no + na_indi_no
+y_yes = black_yes + white_yes + black_his_yes + white_his_yes + asian_pa_yes + na_indi_yes
+
+#finding the total/aggrgegate error across all the races
+error = demographic_parity_error(y_hat_black, black_no, black_yes)
+error += demographic_parity_error(y_hat_white, white_no, white_yes)
+error += demographic_parity_error(y_hat_black_his, black_his_no, black_his_yes)
+error += demographic_parity_error(y_hat_white_his, white_his_no, white_his_yes)
+error += demographic_parity_error(y_hat_asian_pa, asian_pa_no, asian_pa_yes)
+error += demographic_parity_error(y_hat_na_indi, na_indi_no, na_indi_yes)
+
+#display the error:
+print(error)
+```
 
 ### Errors comparison and any inferences:
 
-test
+Now that we have calculated the **predictive rate parity error** and **demographic parity error**, we can interpret the results.
+
+If the model satisfies a definition of fairness, then we expect an error for that definition to be close to 0. 
+
+Looking at the two errors, we see that none of the errors were remotely close to 0. This implies that the model does not satisfy **predictive rate parity** *or* **demographic parity**. 
+
+### What does this mean?
+In short, this definitively proves that our model fits a definition of fairness we did not investigate. Thus, there exists a large amount of possible definitions the model could fit. However, we will not investigate each one. We can however, hypothesize what fairness definition fits our model.
 
 ## Section 4: Conclusion
 
@@ -137,7 +338,7 @@ Resources: https://en.wikipedia.org/wiki/New_York_City_Police_Department_corrupt
 https://www.wsj.com/articles/nypds-stop-and-frisk-practice-still-affects-minorities-in-new-york-city-11574118605
 https://www.nytimes.com/2019/11/17/nyregion/bloomberg-stop-and-frisk-new-york.html
 
-Two possible definitions that fit the context and model: individual fairness and fairness through unawareness
+Two possible definitions that can fit the context and model: individual fairness and fairness through unawareness
 
 ### Individual Fairness
 Pie chart: for a crime, grab a person from each racial group with the most similar if not the same values, and then see if they have the same outcome (yes or no arrest)
