@@ -17,18 +17,18 @@ The following techniques have been utilized to perform the analysis:
 # Full length breakdown of the DataAnalysisProject (RATM).ipynb file:
 
 - [Section 1: Onboarding process](#section-1-onboarding-process)
-  * [Data preprocessing:](#data-preprocessing)
+  * [Data preprocessing](#data-preprocessing)
     + [Removal of features](#removal-of-features)
     + [Feature engineering](#feature-vectors)
     + [Dropping extraneous columns](#dropping-extraneous-columns)
     + [Type conversion](#type-conversion)
-  * [Reading in the NYPD dataset and dropping null values:](#reading-in-the-NYPD-dataset-and-dropping-null-values)
+  * [Reading in the NYPD dataset](#reading-in-the-NYPD-dataset)
 - [Section 2: Modeling process](#section-2-modeling-process)
-  * [Training and predicting with the model:](#training-and-predicting-with-the-model)  
+  * [Training and predicting with the model](#training-and-predicting-with-the-model)  
 - [Section 3: Fairness definitions](section-3-Fairness-definitions)
-  * [Predictive rate parity:](#predictive-rate-parity)
-  * [Demographic parity:](#demographic-parity)
-  * [Errors comparison and any inferences:](#errors-comparison-and-any-inferences)
+  * [Predictive rate parity](#predictive-rate-parity)
+  * [Demographic parity](#demographic-parity)
+  * [Errors comparison and any inferences](#errors-comparison-and-any-inferences)
 - [Section 4: Conclusion](#section-4-Conclusion)
 - [Section 5: Things to note](#section-5-Things-to-note)
 - [Section 6: Future modifications and predictions](#section-6-Future-modifications-and-predictions)
@@ -39,6 +39,8 @@ The following techniques have been utilized to perform the analysis:
 ## Section 1: Onboarding process
 
 ### Data preprocessing:
+
+[Dataset can be found here](https://www1.nyc.gov/site/nypd/stats/reports-analysis/stopfrisk.page) 
 
 #### Removal of features:
 
@@ -55,11 +57,9 @@ In the original dataset, there were over 83 features. After this step, we were l
 
 #### Feature engineering:
 
-Because models cannot use strings, we had to convert all strings in the dataset to numerical values. This process is called "Mapping Categorical Variables". So for each unique value in the feature, we mapped it to an integer value and kept track of these values on a separate database for data retracing.
+Because models cannot use strings, we decided to manually convert all strings in the dataset to numerical values. This process is called "Mapping Categorical Variables". So for each unique value in the feature, we mapped it to an integer value and kept track of these values on a separate database for data retracing.
 
 For example, the feature "OFFICER_EXPLAINED_STOP_FLAG" consisted of *Ys* for *Yes* and *Ns* for *No*. We mapped *Y* to 2 and *N* to 1. 
-
-During this step, we also replaced all cells populated with the "NULL" value to 0 values. We did this to keep all of the dataset. We previously used the dropna function but this brought down the size of the dataset significantly.  
 
 (We also moved the feature/column named "SUSPECT_ARRESTED_FLAG" to the end. We did this for ease and emphasis on/with this column. For this project, we were using this feature as the label that we were trying to predict.)
 
@@ -86,7 +86,7 @@ dataX = data.values[:, :19]
 dataY = data.values[:, -1:].ravel() #"SUSPECT_ARRESTED_FLAG"
 ```
 
-### Reading in the NYPD dataset and dropping null values:
+### Reading in the NYPD dataset:
 
 We first began by importing the libraries, as well as the NYPD dataset, we will be using for this project:
 
@@ -96,7 +96,7 @@ import numpy as np
 import warnings # Suppressing warnings
 warnings.filterwarnings('ignore')
 ```
-This allows us to read the file and create a pandas DataFrame, as follows. During this step, we also replaced all cells populated with the "NULL" value to 0 values. We did this to keep all of the dataset. 
+Afterwards, weread the file and create a pandas DataFrame, as follows. During this step, we also filled in all cells populated with the "NULL" or "NAN" value to 0 values. We did this to keep all of the dataset. We also decided to this because we previously used the dropna function, but it brought down the size of the dataset significantly and took out important features. 
 
 ```python
 data = pd.read_csv("NYPD2019.csv")
