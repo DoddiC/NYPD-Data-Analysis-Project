@@ -32,9 +32,8 @@ The following techniques have been utilized to perform the analysis:
   * [Errors comparison and any inferences](#errors-comparison-and-any-inferences)
 - [Section 4: Conclusion](#section-4-Conclusion)
   * [Other possible definitions](#other-possible-definitions)
-  * [Things to note](#things to note)
+  * [Things to note](#things-to-note)
   * [Citations](#citations)
--[Section 5: Things to note](#section-5-Things-to-note)
     
 <!-- toc -->
 
