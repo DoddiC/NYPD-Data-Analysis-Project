@@ -114,7 +114,107 @@ For our purposes, we are choosing a logistic regression model. We felt this mode
 
 ### Training and predicting with the model:
 
-test
+For our analysis, we trained a logistic regression model on 80% of our data and tested on 20% of our data, utilized helper methods where we saw fit:
+
+```python
+# importing libraries and functions
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+
+def CreateFitModel(X_in, y_in):
+    
+    # create/initialize model
+    model = LogisticRegression().fit(X_in, y_in)
+    #training model with training data set
+    model.fit(X_in, y_in)
+    
+    return(model)
+
+print("Testing...")
+myModel = CreateFitModel(dataX,dataY)
+print("Done.")
+
+def ScoreAndStats(X, y, X_train, y_train, X_test, y_test):
+    
+    # Show shapes of all datasets (full, train, test)
+    
+    print("Shapes X(r,c) y(r,c)\n")
+    print("Full  ", X.shape, y.shape)
+    print("  Train ", X_train.shape, y_train.shape)
+    print("  Test  ", X_test.shape, y_test.shape)
+    
+    # Show labels count and proportions for all datasets
+    
+    print("\nLabels")
+    print("\nFull  dataset")
+    labelStats(y)
+    print("\nTrain dataset")
+    labelStats(y_train)
+    print("\nTest  dataset")
+    labelStats(y_test)
+    
+    # Create, fit and score model using only full dataset
+    
+    print()
+    print("\nFull Dataset (X,y)         Fit and scoring using the full dataset (X,y) --------------------------")
+    myModel = CreateFitModel(X,y)
+    scoreModel(myModel,X,y)                   # Notice model fit and score data is the same.. NOOOO!
+    
+    # Split full dataset, create model using TRAIN then score model using TEST
+    
+    print("\nSplit Dataset (train/test) Training (X_train, y_train) and Testing (X_test, y_test) Data ---------")
+    myModel = CreateFitModel(X_train,y_train) # Create and fit model using TRAINING subset
+    scoreModel(myModel,X_test,y_test)         # Scoring is based on TRAINING fitted model and TEST data
+    
+    # Confusion Matrix Explained
+    # Truth/Actual are the rows, Predictions are the columns
+    #        green  red
+    # green     10    2 <-- 12 greens, 10 green predicted as green, 2 greens predicted as red 
+    #   red      5   13 <-- 15 reds, 5 reds predicted as green, 13 reds predicted as red 
+    from sklearn.metrics import confusion_matrix 
+    
+    print("\nConfusion Matrix (based on TEST data)")
+    myTargets = np.unique(y)
+    y_predictions = myModel.predict(X_test)
+    print()
+    print(pd.DataFrame(confusion_matrix(y_test, y_predictions, myTargets), index=myTargets, columns=myTargets))
+
+def labelStats(label_array_in):
+    
+    from collections import Counter
+    
+    # Get label counts and percentages (proportions)
+    
+    (unique, counts) = np.unique(label_array_in, return_counts=True)
+    frequencies = np.asarray((unique, counts)).T
+    
+    for row in range(np.shape(frequencies)[0]):
+        myPct = 100*frequencies[row,1]/np.shape(label_array_in)[0]
+        print("{color:8} {cnt:5f}  {pct:5.1f}".format(color=frequencies[row,0], cnt=frequencies[row,1], pct=myPct))
+
+print("Testing...\n")
+labelStats(dataY)
+print("\nDone.")
+
+def scoreModel(model_in, X_in, y_in):
+    
+    from sklearn.metrics import accuracy_score
+    
+    # predict using the initialized and fitted model
+    y_predictions = model_in.predict(X_in)
+    print("Score: ", accuracy_score(y_in, y_predictions))
+    
+    # better scoring, but out of scope for this article
+    #scores = cross_val_score(model_in, X_in, y_in, cv=5, n_jobs=3)
+    #print("\nScores\n")
+    #print("All   ", scores)
+    #print("Mean  ", scores.mean())
+    #print("Median", np.median(scores))
+
+print("Testing...")
+scoreModel(myModel,dataX,dataY)
+print("Done.")
+```
 
 ## Section 3: Fairness definitions
 
@@ -255,7 +355,7 @@ print(predictive_parity_err) #if definition is followed, the error should be nea
 
 we will examine how well the model follows the definition of Demogrpahic Parity. This definition essentially strives for an equal probability of a subject being assigned to the positive prediction class across/for all groups in the protected attribute. We chose this definition because it is supported legally by what is called the "four-fifth rule". This in conjunction with the fact this is the NYPD, a government agency, it was necessary to evaluate the model with this definition. 
 
-Demographic Parity Error:
+**Demographic Parity Error**:
 For a group G, Y = predicted label
 
 Intuitively demographic parity says that the ratio of the group in the whole population will be the same as the ratio of the group in the predicted classes. Formally for protected attribute  𝐺  and classifier  𝑌̂  , this can be specified as
@@ -325,7 +425,7 @@ Now that we have calculated the **predictive rate parity error** and **demograph
 
 If the model satisfies a definition of fairness, then we expect an error for that definition to be close to 0. 
 
-Looking at the two errors, we see that none of the errors were remotely close to 0. This implies that the model does not satisfy **predictive rate parity** *or* **demographic parity**. 
+Looking at the two errors, we see that none of the errors were remotely close to 0. This implies that the model does not satisfy **predictive rate parity** or **demographic parity**. 
 
 **Inferences**:
 In short, this definitively proves that our model fits a definition of fairness we did not investigate. Thus, there exists a large amount of possible definitions the model could fit. We can however, hypothesize what fairness definition fits our model.
@@ -338,15 +438,207 @@ Resources: https://en.wikipedia.org/wiki/New_York_City_Police_Department_corrupt
 https://www.wsj.com/articles/nypds-stop-and-frisk-practice-still-affects-minorities-in-new-york-city-11574118605
 https://www.nytimes.com/2019/11/17/nyregion/bloomberg-stop-and-frisk-new-york.html
 
-In the previous section, we discovered that Demographic Parity and Predictive Parity couldn't work as a definition because they were not satisfied by our logistic regression model trained on the NYPD dataset from 2019. 
+To recap, in our first scenario, we used the SUSPECT_ARRESTED_FLAG as our target and used 15 features to predict whether or not the stop-and-frisk event leading to an arrest was equal across racial identities. We also discovered that Demographic Parity and Predictive Parity couldn't work as a definition because they were not satisfied by our logistic regression model trained on the NYPD dataset from 2019. 
 
 Hence, we can infer that a possible definition that can fit the context and model could be fairness through unawareness. It could work by these reasons:
 
-**Fairness through Unawareness**:
-- police watch and report more for neighborhoods with more crime 
-  - disparate impact on BIPOC communities
-  - report more crime and the more police, the more crimes
-- NYPD has a history of undisciplined misconduct
+We used sci-kit learn packages to plot the ROC curves, MLXTEND libraries to plot the confusion matrices, and other open source code to output the count and proportions of the split datasets, all of which are mentioned in the Citations label below. 
+
+```python
+from sklearn import metrics as metrics
+from sklearn.metrics import ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
+from mlxtend.plotting import plot_confusion_matrix
+
+Y_test = dataY_test
+Y_hat = y_hat_score
+
+Y_test = dataY_test
+Y_hat = y_hat_score
+
+cfm = metrics.confusion_matrix(Y_test, Y_hat, labels = [0, 1])
+
+fig, ax = plot_confusion_matrix(conf_mat=cfm,
+                                show_absolute=True,
+                                show_normed=True,
+                                colorbar=False)
+ax.set_title('All') 
+plt.show()
+
+#Black
+
+Y_test = Y_black
+Y_hat = y_hat_black
+
+
+cfm = metrics.confusion_matrix(Y_test, Y_hat, labels = [0, 1])
+fig, ax = plot_confusion_matrix(conf_mat=cfm,
+                                show_absolute=True,
+                                show_normed=True,
+                                colorbar=False)
+ax.set_title('Black') 
+plt.show()
+
+#White
+
+Y_test = Y_white
+Y_hat = y_hat_white
+
+cfm = metrics.confusion_matrix(Y_test, Y_hat, labels = [0, 1])
+fig, ax = plot_confusion_matrix(conf_mat=cfm,
+                                show_absolute=True,
+                                show_normed=True,
+                                colorbar=False)
+ax.set_title('White') 
+plt.show()
+
+#Black Hispanic
+
+Y_test = Y_black_hispanic
+Y_hat = y_hat_black_his
+
+cfm = metrics.confusion_matrix(Y_test, Y_hat, labels = [0, 1])
+fig, ax = plot_confusion_matrix(conf_mat=cfm,
+                                show_absolute=True,
+                                show_normed=True,
+                                colorbar=False)
+ax.set_title('Black Hispanic') 
+plt.show()
+
+#White Hispanic
+
+Y_test = Y_white_hispanic
+Y_hat = y_hat_white_his
+
+cfm = metrics.confusion_matrix(Y_test, Y_hat, labels = [0, 1])
+fig, ax = plot_confusion_matrix(conf_mat=cfm,
+                                show_absolute=True,
+                                show_normed=True,
+                                colorbar=False)
+ax.set_title('White Hispanic') 
+plt.show()
+
+#Asian
+
+Y_test = Y_asian_pacific
+Y_hat = y_hat_asian_pa
+
+cfm = metrics.confusion_matrix(Y_test, Y_hat, labels = [0, 1])
+fig, ax = plot_confusion_matrix(conf_mat=cfm,
+                                show_absolute=True,
+                                show_normed=True,
+                                colorbar=False)
+ax.set_title('Asian') 
+plt.show()
+
+#no native americans, optional
+#y_hat_na_indi, Y_na_indian
+```
+
+We then plotted the error for predictive parity and demographic parity using matplotlib commands. 
+
+```python
+#line plot
+
+%matplotlib inline 
+import matplotlib.pyplot as plt
+
+fpr_black, tpr_black, thresholds = metrics.roc_curve(Y_black, y_hat_black)
+fpr_white, tpr_white, thresholds = metrics.roc_curve(y_hat_white, Y_white)
+fpr_black_his, tpr_black_his, thresholds = metrics.roc_curve(y_hat_black_his, Y_black_hispanic)
+fpr_white_his, tpr_white_his, thresholds = metrics.roc_curve(y_hat_white_his, Y_white_hispanic)
+fpr_asian_pa, tpr_asian_pa, thresholds = metrics.roc_curve(y_hat_asian_pa, Y_asian_pacific)
+fpr_na_indi, tpr_na_indi, thresholds = metrics.roc_curve(y_hat_na_indi, Y_na_indian)
+
+
+plt.title("ROC Curve")
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
+plt.plot([0, 1], [0, 1], 'k--', label="TPR = FPR")
+plt.plot(fpr_black, tpr_black, color='blue', label="Black")
+plt.plot(fpr_white, tpr_white, color='red', label="White")
+plt.plot(fpr_black_his, tpr_black_his, color='green', label="Black Hispanic")
+plt.plot(fpr_white_his, tpr_white_his, color='purple', label="White Hispanic")
+plt.plot(fpr_asian_pa, tpr_asian_pa, color='cyan', label="Asian/Pacific Islander")
+plt.plot(fpr_na_indi, tpr_na_indi, color='orange', label="Native American/Indian")
+
+plt.legend()
+plt.show()
+```
+We also wanted to investigate a different scenario, whereby we used the FRISKED_FLAG as our target label to see if race was disproportionately affected and if this pattern can appear in general stop-and-frisk incidents, like an NYCLU report claimed.
+
+```python
+frisked_dataset = data.values[:, :]
+frisked_dataset[:, [6, 19]] = frisked_dataset[:, [19, 6]] #swaps Frisked_flag and arrested_flag
+
+friskedX = frisked_dataset[:, :19]
+friskedY = frisked_dataset[:, -1:].ravel() #FRISKED_FLAG
+
+#splitting into test and training data, 80:20 split (TRAIN:TEST)
+friskX_train, friskX_test, friskY_train, friskY_test = train_test_split(friskedX, friskedY, test_size = 0.2, stratify = friskedY, random_state = 123)
+#stratifying dataY groups
+reg = LogisticRegression()
+
+#training model with training data set
+reg.fit(friskX_train, friskY_train)
+# model predicting with test data set
+#y_hat_frisk = reg.predict(friskX_test)
+
+#split on racial groups
+fX_black, fX_white, fX_black_hispanic, fX_white_hispanic, fX_asian_pacific, fX_na_indian, fY_black, fY_white, fY_black_hispanic, fY_white_hispanic, fY_asian_pacific, fY_na_indian = split_on_feature(friskedX, friskedY)
+
+# predict on model! with the arrays
+f_hat_black = reg.predict(fX_black)
+f_hat_white = reg.predict(fX_white)
+f_hat_black_his = reg.predict(fX_black_hispanic)
+f_hat_white_his = reg.predict(fX_white_hispanic)
+f_hat_asian_pa = reg.predict(fX_asian_pacific)
+f_hat_na_indi = reg.predict(fX_na_indian)
+
+#ppe
+#calculating ppv and fdr for each race group
+ppv_black, fdr_black = PPV_FDR(f_hat_black, fY_black)
+ppv_white, fdr_white = PPV_FDR(f_hat_white, fY_white)
+ppv_black_his, fdr_black_his = PPV_FDR(f_hat_black_his, fY_black_hispanic)
+ppv_white_his, fdr_white_his = PPV_FDR(f_hat_white_his, fY_white_hispanic)
+ppv_asian_pa, fdr_asian_pa = PPV_FDR(f_hat_asian_pa, fY_asian_pacific)
+ppv_na_indi, fdr_na_indi = PPV_FDR(f_hat_na_indi, fY_na_indian)
+
+#calculating predictive parity error
+predictive_parity_err = np.abs(fdr_black - fdr_white - fdr_black_his - fdr_white_his - fdr_asian_pa - fdr_na_indi)
+predictive_parity_err += np.abs(ppv_black - ppv_white - ppv_black_his - ppv_white_his - ppv_asian_pa - ppv_na_indi)
+#all of error comes from line 41
+
+#if definition is followed, should be near 0
+#display error
+print(predictive_parity_err)
+
+throwaway, counts = np.unique(f_hat_black, return_counts = True)
+black_no, black_yes = counts[0], counts[1]
+throwaway, counts = np.unique(f_hat_white, return_counts = True)
+white_no, white_yes = counts[0], counts[1]
+throwaway, counts = np.unique(f_hat_black_his, return_counts = True)
+black_his_no, black_his_yes = counts[0], counts[1]
+throwaway, counts = np.unique(f_hat_white_his, return_counts = True)
+white_his_no, white_his_yes = counts[0], counts[1]
+throwaway, counts = np.unique(f_hat_asian_pa, return_counts = True)
+asian_pa_no, asian_pa_yes = counts[0], counts[1]
+throwaway, counts = np.unique(f_hat_na_indi, return_counts = True)
+na_indi_no, na_indi_yes = counts[0], counts[1]
+
+y_no = black_no + white_no + black_his_no + white_his_no + asian_pa_no + na_indi_no
+y_yes = black_yes + white_yes + black_his_yes + white_his_yes + asian_pa_yes + na_indi_yes
+
+error = demographic_parity_error(f_hat_black, black_no, black_yes)
+error += demographic_parity_error(f_hat_white, white_no, white_yes)
+error += demographic_parity_error(f_hat_black_his, black_his_no, black_his_yes)
+error += demographic_parity_error(f_hat_white_his, white_his_no, white_his_yes)
+error += demographic_parity_error(f_hat_asian_pa, asian_pa_no, asian_pa_yes)
+error += demographic_parity_error(f_hat_na_indi, na_indi_no, na_indi_yes)
+
+#display demographic parity error:
+print(error)
+```
 
 ### Things to note:
 
