@@ -327,8 +327,8 @@ If the model satisfies a definition of fairness, then we expect an error for tha
 
 Looking at the two errors, we see that none of the errors were remotely close to 0. This implies that the model does not satisfy **predictive rate parity** *or* **demographic parity**. 
 
-### What does this mean?
-In short, this definitively proves that our model fits a definition of fairness we did not investigate. Thus, there exists a large amount of possible definitions the model could fit. However, we will not investigate each one. We can however, hypothesize what fairness definition fits our model.
+**Inferences**:
+In short, this definitively proves that our model fits a definition of fairness we did not investigate. Thus, there exists a large amount of possible definitions the model could fit. We can however, hypothesize what fairness definition fits our model.
 
 ## Section 4: Conclusion
 
@@ -338,16 +338,15 @@ Resources: https://en.wikipedia.org/wiki/New_York_City_Police_Department_corrupt
 https://www.wsj.com/articles/nypds-stop-and-frisk-practice-still-affects-minorities-in-new-york-city-11574118605
 https://www.nytimes.com/2019/11/17/nyregion/bloomberg-stop-and-frisk-new-york.html
 
-Two possible definitions that can fit the context and model: individual fairness and fairness through unawareness
+In the previous section, we discovered that Demographic Parity and Predictive Parity couldn't work as a definition because they were not satisfied by our logistic regression model trained on the NYPD dataset from 2019. 
 
-**Individual Fairness**
-Pie chart: for a crime, grab a person from each racial group with the most similar if not the same values, and then see if they have the same outcome (yes or no arrest)
+Hence, we can infer that a possible definition that can fit the context and model could be fairness through unawareness. It could work by these reasons:
 
-**Fairness through Unawareness**
+**Fairness through Unawareness**:
 - police watch and report more for neighborhoods with more crime 
   - disparate impact on BIPOC communities
-  - report moer crime, more police, more crimes
-- NYPD has history of undisciplined misconduct
+  - report more crime and the more police, the more crimes
+- NYPD has a history of undisciplined misconduct
 
 ### Things to note:
 
