@@ -29,7 +29,7 @@ The following techniques have been utilized to perform the analysis:
   * [Create a split_on_feature() function](#create-a-split_on_feature()-function)
   * [Predictive rate parity](#predictive-rate-parity)
   * [Demographic parity](#demographic-parity)
-  * [Errors comparison and any inferences](#errors-comparison-and-any-inferences)
+  * [Errors comparison and inferences](#errors-comparison-and-inferences)
 - [Section 4: Conclusion](#section-4-Conclusion)
   * [Other possible definitions](#other-possible-definitions)
   * [Things to note](#things-to-note)
@@ -419,7 +419,7 @@ error += demographic_parity_error(y_hat_na_indi, na_indi_no, na_indi_yes)
 print(error)
 ```
 
-### Errors comparison and any inferences:
+### Errors comparison and inferences:
 
 Now that we have calculated the **predictive rate parity error** and **demographic parity error**, we can interpret the results.
 
@@ -535,7 +535,7 @@ plt.show()
 #y_hat_na_indi, Y_na_indian
 ```
 
-We then plotted the error for predictive parity and demographic parity using matplotlib commands. 
+We then plotted the error for predictive parity and demographic parity using matplotlib commands:
 
 ```python
 #line plot
@@ -549,7 +549,6 @@ fpr_black_his, tpr_black_his, thresholds = metrics.roc_curve(y_hat_black_his, Y_
 fpr_white_his, tpr_white_his, thresholds = metrics.roc_curve(y_hat_white_his, Y_white_hispanic)
 fpr_asian_pa, tpr_asian_pa, thresholds = metrics.roc_curve(y_hat_asian_pa, Y_asian_pacific)
 fpr_na_indi, tpr_na_indi, thresholds = metrics.roc_curve(y_hat_na_indi, Y_na_indian)
-
 
 plt.title("ROC Curve")
 plt.xlabel("False Positive Rate")
@@ -644,6 +643,7 @@ print(error)
 
 #### Data Quality Issues:
 > ##### **Representativeness**
+Because the dataset only consisted of the stops and frisk incidents that happened in 2019, we felt that the sample data was not representative of the larger population.
 > ##### **Preprocessing**: 
 We were merciless with the data we used for our model. We only accepted feature vectors with sufficient data and dropped all those that had *any* instance of values we could not use. We did not prioritise reprensativeness and it led to an extremely harmful (and incorrect) model. This is apparent when you compare the proporiton of arrests over the entire dataset and the "cleaned" dataset (0.32, 0.93). 
 > ##### **Noise and Sparse Data**: 
