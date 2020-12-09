@@ -107,7 +107,9 @@ data.head()
 
 ## Section 2: Modeling process
 
-test
+Resource: https://colab.research.google.com/drive/1yXPM2I3urC5W9SSfP2fhTGamPqaObY_m#scrollTo=XDQYFioMLlXI
+
+For our purposes, we are choosing a logistic regression model. We felt this model is an appropriate choice for a multitude of reasons (time, context of the data, etc.). 
 
 ### Training and predicting with the model:
 
@@ -131,6 +133,10 @@ test
 
 ## Section 4: Conclusion
 
+Resources: https://en.wikipedia.org/wiki/New_York_City_Police_Department_corruption_and_misconduct
+https://www.wsj.com/articles/nypds-stop-and-frisk-practice-still-affects-minorities-in-new-york-city-11574118605
+https://www.nytimes.com/2019/11/17/nyregion/bloomberg-stop-and-frisk-new-york.html
+
 Two possible definitions that fit the context and model: individual fairness and fairness through unawareness
 
 ### Individual Fairness
@@ -141,11 +147,6 @@ Pie chart: for a crime, grab a person from each racial group with the most simil
   - disparate impact on BIPOC communities
   - report moer crime, more police, more crimes
 - NYPD has history of undisciplined misconduct
-
-Resources: 
-https://en.wikipedia.org/wiki/New_York_City_Police_Department_corruption_and_misconduct
-https://www.wsj.com/articles/nypds-stop-and-frisk-practice-still-affects-minorities-in-new-york-city-11574118605
-https://www.nytimes.com/2019/11/17/nyregion/bloomberg-stop-and-frisk-new-york.html
 
 ## Section 5: Things to note
 
