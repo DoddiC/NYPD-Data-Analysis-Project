@@ -17,23 +17,23 @@ The following techniques have been utilized to perform the analysis:
 
 # Full length breakdown of the DataAnalysisProject (RATM).ipynb file:
 
-- [Section 1: Onboarding process](#section-1-onboarding-process)
-  * [Data preprocessing](#data-preprocessing)
-    + [Removal of features](#removal-of-features)
-    + [Feature engineering](#feature-vectors)
-    + [Dropping extraneous columns](#dropping-extraneous-columns)
-    + [Type conversion](#type-conversion)
-  * [Reading in the NYPD dataset](#reading-in-the-NYPD-dataset)
-- [Section 2: Modeling process](#section-2-modeling-process)
-  * [Training and predicting with the model](#training-and-predicting-with-the-model)  
-- [Section 3: Fairness definitions](section-3-Fairness-definitions)
-  * [Create a split_on_feature() function](#create-a-split_on_feature()-function)
-  * [Predictive rate parity](#predictive-rate-parity)
-  * [Demographic parity](#demographic-parity)
-  * [Errors comparison and inferences](#errors-comparison-and-inferences)
-- [Section 4: Conclusion](#section-4-Conclusion)
-  * [Other possible definitions](#other-possible-definitions)
-  * [Things to note](#things-to-note)
+- [Section 1: Onboarding process]
+  * [Data preprocessing]
+    + [Removal of features]
+    + [Feature engineering]
+    + [Dropping extraneous columns]
+    + [Type conversion]
+  * [Reading in the NYPD dataset]
+- [Section 2: Modeling process]
+  * [Training and predicting with the model]
+- [Section 3: Fairness definitions]
+  * [Create a split_on_feature() function]
+  * [Predictive rate parity]
+  * [Demographic parity]
+  * [Errors comparison and inferences]
+- [Section 4: Conclusion]
+  * [Other possible definitions]
+  * [Things to note]
   * [Citations](#citations)
     
 <!-- toc --> 
