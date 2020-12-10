@@ -4,7 +4,7 @@ This project performs general data analysis on a given dataset. The database rec
 
 # Content
 Main files in this project:
-* [DataAnalysisProject (RATM).ipynb](https://github.com/DoddiC/DataAnalysisProject-RATM/blob/master/DataAnalysisProject%20(RATM).ipynb): loads the dataset and performs all the analysis mentioned below.
+* [DataAnalysisProject(RATM).ipynb](https://github.com/DoddiC/DataAnalysisProject-RATM/blob/master/DataAnalysisProject%20(RATM).ipynb): loads the dataset and performs all the analysis mentioned below.
 * [NYPD2019.csv](https://github.com/DoddiC/DataAnalysisProject-RATM/blob/master/NYPD2019.csv):  We do not own the dataset. The full .xls file is located at this url: https://www1.nyc.gov/site/nypd/stats/reports-analysis/stopfrisk.page. However, in order to assist setup of the .ipynb project, a preprocessed version has been added to the repository. 
 * [README.md](https://github.com/DoddiC/DataAnalysisProject-RATM/blob/master/README.md):  This is a brief overview of the project repository. So references to files, techniques, concepts, and sources.
 
@@ -15,7 +15,7 @@ The following techniques have been utilized to perform the analysis:
 * Demographic and Predictive Parity
 * Matplotlib
 
-# Full length breakdown of the DataAnalysisProject (RATM).ipynb file:
+# Overview of the DataAnalysisProject(RATM).ipynb file:
 
 - Section 1: Onboarding process
   * Data preprocessing
